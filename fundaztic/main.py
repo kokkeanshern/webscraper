@@ -3,19 +3,18 @@ import time
 import logging
 from selenium import webdriver
 from locators import login
-from constants import Captcha
+from constants import Captcha, Links
 from captcha.ocr import solve_captcha
 
 
 if __name__ == "__main__":
-    # Setup logging
     logging.basicConfig(level=logging.INFO)
 
     driver = webdriver.Chrome()
-    driver.get("https://p2p.fundaztic.com/visitor/to-login")
+    driver.get(Links.fundaztic_login)
 
-    email = os.environ["EMAIL"]
-    password = os.environ["PASSWORD"]
+    email = os.environ["FUNDAZTIC_EMAIL"]
+    password = os.environ["FUNDAZTIC_PASSWORD"]
 
     login.resolve_email_input(driver, email)
     login.resolve_password_input(driver, password)

@@ -4,11 +4,17 @@ import numpy as np
 import pytesseract
 from constants import Captcha
 
-def solve_captcha(raw_image_file):
-    # Thresholds and blurring sigma
-    th1 = 100
-    th2 = 140
-    sig = 1.4
+def solve_captcha(raw_image_file: str) -> str:
+    """
+    Processes the captcha image and returns the solved captcha text.
+    Args:
+        raw_image_file (str): Path to the raw captcha image file.
+    Returns:
+        result (str): The solved captcha text.
+    """
+
+    # Keep these values constant for now.
+    th1, th2, sig = 100, 140, 1.4
 
     pytesseract.pytesseract.tesseract_cmd = r"C:\Users\shern\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
 
