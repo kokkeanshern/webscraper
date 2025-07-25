@@ -1,8 +1,9 @@
+import os
+import pytesseract
+import numpy as np
+from constants import Captcha
 from PIL import Image, ImageFilter
 from scipy.ndimage import gaussian_filter
-import numpy as np
-import pytesseract
-from constants import Captcha
 
 def solve_captcha(raw_image_file: str) -> str:
     """
@@ -16,25 +17,25 @@ def solve_captcha(raw_image_file: str) -> str:
     # Keep these values constant for now.
     th1, th2, sig = 100, 140, 1.4
 
-    pytesseract.pytesseract.tesseract_cmd = r"C:\Users\shern\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
+    pytesseract.pytesseract.tesseract_cmd = os.environ["TESSERACT_EXECUTABLE_PATH"]
 
-    # Load and save the original image
     original = Image.open(raw_image_file)
-    # Convert to black and white
+    
+    # Convert the image to black and white.
     black_and_white = original.convert("L")
     black_and_white.save(Captcha.bnw_image_file)
 
-    # Apply the first threshold
+    # Apply the first threshold.
     first_threshold = black_and_white.point(lambda p: p > th1 and 255)
     first_threshold.save(Captcha.first_threshold_file)
 
-    # Apply Gaussian blur
-    blur = np.array(first_threshold)  # Create an image array
+    # Apply Gaussian blur.
+    blur = np.array(first_threshold)
     blurred = gaussian_filter(blur, sigma=sig)
     blurred = Image.fromarray(blurred)
     blurred.save(Captcha.blurred_image_file)
 
-    # Apply the final threshold
+    # Apply the final threshold.
     final = blurred.point(lambda p: p > th2 and 255)
     final = final.filter(ImageFilter.EDGE_ENHANCE_MORE)
     final = final.filter(ImageFilter.SHARPEN)
