@@ -23,5 +23,7 @@ if __name__ == "__main__":
 
     login.resolve_verification_input(driver, result)
 
-    time.sleep(10)
+    login.click_submit_button(driver)
+
+    time.sleep(7)
     driver.quit()

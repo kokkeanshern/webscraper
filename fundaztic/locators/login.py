@@ -1,5 +1,8 @@
-from selenium.webdriver.common.by import By
 import base64
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def resolve_email_input(driver, key):
    email_input = driver.find_element(By.ID, "username")
@@ -29,3 +32,9 @@ def save_captcha_image(driver, img_file):
     # Decode and save the image
     with open(img_file, "wb") as f:
         f.write(base64.b64decode(img_data))
+
+def click_submit_button(driver):
+   login_button = WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable((By.CLASS_NAME, "loginBnt"))
+   )
+   login_button.click()
