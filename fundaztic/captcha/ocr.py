@@ -3,13 +3,12 @@ from scipy.ndimage import gaussian_filter
 import numpy as np
 import pytesseract
 from constants import Captcha
-from io import BytesIO
 
 def solve_captcha(raw_image_file):
     # Thresholds and blurring sigma
-    th1 = 140
-    th2 = 140  
-    sig = 1.2
+    th1 = 100
+    th2 = 140
+    sig = 1.4
 
     pytesseract.pytesseract.tesseract_cmd = r"C:\Users\shern\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
 

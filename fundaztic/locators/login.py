@@ -10,8 +10,8 @@ def resolve_password_input(driver, key):
    password_input.send_keys(key)
 
 def resolve_verification_input(driver, key):
-   verification_input = driver.find_element(By.NAME, "captcha")
-   verification_input.send_keys(key)
+   # "Silently" enters the captcha value to prevent refreshing the captcha challenge.
+   driver.execute_script("document.getElementsByName('captcha')[0].value = arguments[0];", key)
 
 def save_captcha_image(driver, img_file):
     captcha_img = driver.find_element(By.CSS_SELECTOR, "img[src*='/cic/code?name=user_login']")
