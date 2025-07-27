@@ -6,6 +6,7 @@ from locators import login
 from constants import Captcha, Links
 from captcha.ocr import solve_captcha
 
+# ToDo: Ensure setup works on Linux machines (infra will use Linux).
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
