@@ -1,8 +1,9 @@
 import base64
-from selenium.webdriver.remote.webdriver import WebDriver
+from utils.generic import save_file
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 
 
@@ -43,6 +44,4 @@ def save_image(
         """,
         captcha_img,
     )
-
-    with open(img_file_name, "wb") as f:
-        f.write(base64.b64decode(img_data))
+    save_file(file_path=img_file_name, write_content=base64.b64decode(img_data))
