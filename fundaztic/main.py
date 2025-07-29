@@ -3,10 +3,10 @@ import time
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from constants import Captcha, Links, FundazticLocators, ApiParams
+from selenium.webdriver.chrome.options import Options
+from constants import Captcha, Links, FundazticLocators, FilePaths
 from captcha.ocr import solve_captcha
 from utils.ui_interactions import send_key, click_element, save_image
-from utils.api_interactions import download_file
 
 # ToDo: Ensure setup works on Linux machines (infra will use Linux).
 # ToDo: Add retry logic for failed submissions.
@@ -14,8 +14,17 @@ from utils.api_interactions import download_file
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
+    options = Options()
+    prefs = {
+        "download.default_directory": str(FilePaths.download_dir),
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True,
+    }
+    options.add_experimental_option("prefs", prefs)
+
     # Initialize the WebDriver and navigate to the login page.
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options)
     driver.get(Links.fundaztic_login)
 
     # Saves the captcha image from the browser in the project directory.
@@ -50,17 +59,9 @@ if __name__ == "__main__":
     # Navigate to the Investments page and download the transaction file.
     click_element(driver, By.LINK_TEXT, "My Investments")
     click_element(driver, By.LINK_TEXT, "Received Distribution")
-    _params = ApiParams(
-        {
-            "beginTime": None,
-            "endTime": None,
-            "loansignId": None,
-        }
-    )
 
-    download_file(
-        driver=driver, base_url=Links.fundaztic_transaction_download, params=_params
-    )
+    # ToDo: Add ability to filter by notes or date range.
+    driver.get(Links.fundaztic_transaction_download)
 
     time.sleep(7)
     driver.quit()

@@ -25,12 +25,5 @@ class FundazticLocators:
     login_page__captcha_puzzle = "img[src*='/cic/code?name=user_login']"
 
 
-class ApiParams:
-    def __init__(self, initial=None):
-        self.params = dict(initial) if initial else {}
-
-    def add(self, key: str, value: str = None):
-        self.params[key] = value
-
-    def update(self, data: dict):
-        self.params.update(data)
+class FilePaths:
+    download_dir = Path(__name__).resolve().parent / "files"
