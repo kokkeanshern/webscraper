@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from constants import Captcha, Links, FundazticLocators, FilePaths
 from captcha.ocr import solve_captcha
 from utils.ui_interactions import send_key, click_element, save_image
+from utils.generic import wait_and_rename_latest_download
 
 # ToDo: Ensure setup works on Linux machines (infra will use Linux).
 # ToDo: Add retry logic for failed submissions.
@@ -62,6 +63,11 @@ if __name__ == "__main__":
 
     # ToDo: Add ability to filter by notes or date range.
     driver.get(Links.fundaztic_transaction_download)
+
+    # Wait and rename the downloaded file
+    wait_and_rename_latest_download(
+        FilePaths.download_dir, "fundaztic_transactions.xls"
+    )
 
     time.sleep(7)
     driver.quit()
