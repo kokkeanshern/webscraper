@@ -1,34 +1,71 @@
 import os
-import time
 import logging
 from selenium import webdriver
-from locators import login
-from constants import Captcha, Links
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from constants import Captcha, Links, FundazticLocators, FilePaths
 from captcha.ocr import solve_captcha
+from utils.ui_interactions import send_key, click_element, save_image
+from utils.generic import wait_and_rename_latest_download
 
 # ToDo: Ensure setup works on Linux machines (infra will use Linux).
+# ToDo: Add retry logic for failed submissions.
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    driver = webdriver.Chrome()
+    options = Options()
+    prefs = {
+        "download.default_directory": str(FilePaths.download_dir),
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True,
+    }
+    options.add_experimental_option("prefs", prefs)
+
+    # Initialize the WebDriver and navigate to the login page.
+    driver = webdriver.Chrome(options=options)
     driver.get(Links.fundaztic_login)
 
-    email = os.environ["FUNDAZTIC_EMAIL"]
-    password = os.environ["FUNDAZTIC_PASSWORD"]
-
-    login.resolve_email_input(driver, email)
-    login.resolve_password_input(driver, password)
-
     # Saves the captcha image from the browser in the project directory.
-    login.save_captcha_image(driver, Captcha.raw_image_file)
+    save_image(
+        driver,
+        Captcha.raw_image_file,
+        By.CSS_SELECTOR,
+        FundazticLocators.login_page__captcha_puzzle,
+    )
 
-    result = solve_captcha(Captcha.raw_image_file)
-    logging.info(f"Captcha solved: {result}")
+    ocr_captcha_value = solve_captcha(Captcha.raw_image_file)
+    logging.info(f"OCR Model Detected Captcha Value: {ocr_captcha_value}")
 
-    login.resolve_verification_input(driver, result)
+    # Fill in the login form with email, password, and captcha value
+    send_key(
+        driver,
+        os.environ["FUNDAZTIC_EMAIL"],
+        By.ID,
+        FundazticLocators.login_page__email_input,
+    )
+    send_key(
+        driver,
+        os.environ["FUNDAZTIC_PASSWORD"],
+        By.NAME,
+        FundazticLocators.login_page__password_input,
+    )
+    # Submitting the captcha value via send_keys triggers the login submission - no need to click the "submit" button.
+    send_key(
+        driver, ocr_captcha_value, By.NAME, FundazticLocators.login_page__captcha_input
+    )
 
-    login.click_submit_button(driver)
+    # Navigate to the Investments page and download the transaction file.
+    click_element(driver, By.LINK_TEXT, "My Investments")
+    click_element(driver, By.LINK_TEXT, "Received Distribution")
 
-    time.sleep(7)
+    # ToDo: Add ability to filter by notes or date range.
+    driver.get(Links.fundaztic_transaction_download)
+
+    # Wait and rename the downloaded file
+    wait_and_rename_latest_download(
+        FilePaths.download_dir, "fundaztic_transactions.xls"
+    )
+
     driver.quit()

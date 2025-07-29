@@ -3,3 +3,4 @@ requests ~= 2.32.4
 pillow ~= 11.3.0
 pytesseract ~= 0.3.13
 scipy ~= 1.15.0
+black ~=25.1.0

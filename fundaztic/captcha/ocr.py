@@ -5,6 +5,7 @@ from constants import Captcha
 from PIL import Image, ImageFilter
 from scipy.ndimage import gaussian_filter
 
+
 def solve_captcha(raw_image_file: str) -> str:
     """
     Processes the captcha image and returns the solved captcha text.
@@ -20,7 +21,7 @@ def solve_captcha(raw_image_file: str) -> str:
     pytesseract.pytesseract.tesseract_cmd = os.environ["TESSERACT_EXECUTABLE_PATH"]
 
     original = Image.open(raw_image_file)
-    
+
     # Convert the image to black and white.
     black_and_white = original.convert("L")
     black_and_white.save(Captcha.bnw_image_file)
@@ -42,6 +43,8 @@ def solve_captcha(raw_image_file: str) -> str:
     final.save(Captcha.final_image_file)
 
     # Perform OCR using Tesseract
-    result = pytesseract.image_to_string(final, lang='eng', config='--psm 7 -c tessedit_char_whitelist=0123456789')
+    result = pytesseract.image_to_string(
+        final, lang="eng", config="--psm 7 -c tessedit_char_whitelist=0123456789"
+    )
 
     return result
