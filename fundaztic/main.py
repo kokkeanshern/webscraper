@@ -5,11 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from constants import Captcha, Links, FundazticLocators, FilePaths
 from captcha.ocr import solve_captcha
-from utils.ui_interactions import send_key, click_element, save_image
 from utils.generic import wait_and_rename_latest_download
-
-# ToDo: Ensure setup works on Linux machines (infra will use Linux).
-# ToDo: Add retry logic for failed submissions.
+from utils.ui_interactions import send_key, click_element, save_image
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -23,7 +20,6 @@ if __name__ == "__main__":
     }
     options.add_experimental_option("prefs", prefs)
 
-    # Initialize the WebDriver and navigate to the login page.
     driver = webdriver.Chrome(options=options)
     driver.get(Links.fundaztic_login)
 
@@ -51,7 +47,6 @@ if __name__ == "__main__":
         By.NAME,
         FundazticLocators.login_page__password_input,
     )
-    # Submitting the captcha value via send_keys triggers the login submission - no need to click the "submit" button.
     send_key(
         driver, ocr_captcha_value, By.NAME, FundazticLocators.login_page__captcha_input
     )
@@ -60,7 +55,6 @@ if __name__ == "__main__":
     click_element(driver, By.LINK_TEXT, "My Investments")
     click_element(driver, By.LINK_TEXT, "Received Distribution")
 
-    # ToDo: Add ability to filter by notes or date range.
     driver.get(Links.fundaztic_transaction_download)
 
     # Wait and rename the downloaded file
