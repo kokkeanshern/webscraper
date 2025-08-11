@@ -1,4 +1,4 @@
-name: Temporary workflow to push to registry
+name: Temporary workflow to push to registry.
 
 on:
   pull_request:
