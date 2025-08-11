@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from constants import Captcha, Links, FundazticLocators, FilePaths
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from captcha.ocr import solve_captcha
 from utils.generic import wait_and_rename_latest_download
 from utils.ui_interactions import send_key, click_element, save_image
@@ -12,6 +13,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
     options = Options()
+    options.add_argument("--window-size=1051,798")
     prefs = {
         "download.default_directory": str(FilePaths.download_dir),
         "download.prompt_for_download": False,

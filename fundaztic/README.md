@@ -4,3 +4,4 @@ Caveats/Notes:
 ToDo List:
 - Add retry logic for failed login attempts.
 - Add ability to filter file by date range.
+- Add linter checks in CI/CD.
