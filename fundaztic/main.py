@@ -7,7 +7,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from captcha.ocr import solve_captcha
 from utils.number_cruncher import aggregate_received_distribution
-from utils.generic import wait_and_rename_latest_download
 from utils.ui_interactions import send_key, click_element, save_image
 from constants import Captcha, Links, FundazticLocators, FilePaths, FileNames
 from utils.email_sender import Email
