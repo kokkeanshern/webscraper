@@ -1,0 +1,18 @@
+name: Temporary workflow to push to registry.
+
+on:
+  pull_request:
+      types: [opened, synchronize, reopened]
+
+jobs:
+  push-to-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to OCIR
+        run: |
+          echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login \
+           ap-singapore-1.ocir.io \
+            -u "${{ secrets.OCI_USERNAME }}" --password-stdin
