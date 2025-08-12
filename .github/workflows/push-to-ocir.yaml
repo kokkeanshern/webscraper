@@ -1,12 +1,17 @@
-name: Temporary workflow to push to registry.
+name: Build Docker Image and Push to OCIR
 
 on:
   pull_request:
       types: [opened, synchronize, reopened]
+  push:
+      branches:
+        - main
 
 jobs:
   push-to-registry:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: sin.ocir.io/ax1h9bph8nyo/fundaztic
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -16,3 +21,18 @@ jobs:
           echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login \
            ap-singapore-1.ocir.io \
             -u "${{ secrets.OCI_USERNAME }}" --password-stdin
+
+      - name: Set image tag based on event
+        id: vars
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "tag=dev" >> $GITHUB_OUTPUT
+          else
+            echo "tag=prod" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest .
+
+      - name: Push Docker image
+        run: docker push ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest
