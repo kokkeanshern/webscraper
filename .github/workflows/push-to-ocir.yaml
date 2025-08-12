@@ -19,7 +19,7 @@ jobs:
       - name: Log in to OCIR
         run: |
           echo "${{ secrets.OCI_AUTH_TOKEN }}" | docker login \
-           ap-singapore-1.ocir.io \
+           sin.ocir.io \
             -u "${{ secrets.OCI_USERNAME }}" --password-stdin
 
       - name: Set image tag based on event
