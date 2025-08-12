@@ -10,6 +10,7 @@ from utils.number_cruncher import aggregate_received_distribution
 from utils.ui_interactions import send_key, click_element, save_image
 from constants import Captcha, Links, FundazticLocators, FilePaths, FileNames
 from utils.email_sender import Email
+from utils.generic import delete_file
 
 
 if __name__ == "__main__":
@@ -107,3 +108,6 @@ if __name__ == "__main__":
     email.send_email("smtp.gmail.com")
 
     driver.quit()
+
+    # Cleanup all downloaded files.
+    delete_file()
