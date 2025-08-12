@@ -27,3 +27,11 @@ def wait_and_rename_latest_download(
             return
         time.sleep(1)
     raise TimeoutError("Download did not complete in time.")
+
+
+def delete_file():
+    for path in ["files", "images"]:
+        p = Path(path)
+        for file in p.iterdir():
+            if file.is_file():
+                file.unlink()  # delete the file
