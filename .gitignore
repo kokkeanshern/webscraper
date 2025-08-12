@@ -2,5 +2,6 @@
 **__pycache__
 **/dev
 **/captcha*.png
+**/fundaztic_transactions*.xls
+**/*.tmp
 **/.vscode
-**/files
