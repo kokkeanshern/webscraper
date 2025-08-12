@@ -32,7 +32,7 @@ jobs:
           fi
 
       - name: Build Docker image
-        run: docker build -t ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest /fundaztic
+        run: docker build -t ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest fundaztic/
 
       - name: Push Docker image
         run: docker push ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest
