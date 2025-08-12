@@ -21,6 +21,8 @@ def wait_and_rename_latest_download(
         if files:
             latest_file = max(files, key=lambda f: f.stat().st_mtime)
             new_path = download_dir / new_filename
+            if new_path.exists():
+                new_path.unlink()  # Delete existing file before rename
             latest_file.rename(new_path)
             return
         time.sleep(1)
