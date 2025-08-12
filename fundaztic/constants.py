@@ -27,3 +27,8 @@ class FundazticLocators:
 
 class FilePaths:
     download_dir = Path(__name__).resolve().parent / "files"
+
+
+class FileNames:
+    received_distribution_xls = "received_distribution.xls"
+    received_distribution_xlsx = "received_distribution.xlsx"
