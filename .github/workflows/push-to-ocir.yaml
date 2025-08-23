@@ -45,5 +45,5 @@ jobs:
         with:
           context: ./fundaztic
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           tags: ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest
