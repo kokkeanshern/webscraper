@@ -17,10 +17,8 @@ RUN wget -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-test
     && rm /tmp/chromedriver.zip
 
 WORKDIR /app
-
 COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT ["python", "main.py"]
-

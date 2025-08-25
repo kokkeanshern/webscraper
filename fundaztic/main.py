@@ -30,6 +30,8 @@ if __name__ == "__main__":
     driver = webdriver.Chrome(options=options)
     driver.get(Links.fundaztic_login)
 
+    time.sleep(10)
+
     # Saves the captcha image from the browser in the project directory.
     save_image(
         driver,

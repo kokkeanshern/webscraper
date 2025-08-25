@@ -31,21 +31,22 @@ jobs:
             echo "tag=prod" >> $GITHUB_OUTPUT
           fi
 
-      # - name: Build Docker image
-      #   run: docker build -t ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest fundaztic/
+      - name: Build Docker image
+        run: docker build -t ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest fundaztic/
 
-      # - name: Push Docker image
-      #   run: docker push ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest
+      - name: Push Docker image
+        run: docker push ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest
 
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+###################################################
+############     Multi-arch build      ############
+###################################################
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: ./fundaztic
-          push: true
-          platforms: linux/arm64
-          tags: ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest
+      # - name: Build and push
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: ./fundaztic
+      #     push: true
+      #     platforms: linux/arm64
+      #     tags: ${{ env.IMAGE_NAME }}/${{ steps.vars.outputs.tag }}:latest
